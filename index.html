@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <title>Login - Matcha Theme</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+      /* Animasi muncul lembut */
+      @keyframes fadeInUp {
+        0% {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Animasi hover */
+      @keyframes floatHover {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      /* Gaya dasar */
+      body {
+        font-family: "Poppins", sans-serif;
+        background: url("butterflies-pink-clouds-gif-desktop-wallpaper-preview.gif")
+          center/cover no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        padding: 0 10px;
+      }
+
+      .login-container {
+        /* Gunakan background.png untuk box login */
+        background: linear-gradient(
+            rgba(255, 255, 255, 0.85),
+            rgba(255, 255, 255, 0.85)
+          ),
+          url("background.png") center/cover no-repeat;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 95%;
+        text-align: center;
+        animation: fadeInUp 1s ease forwards;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .login-container:hover {
+        animation: floatHover 2s ease-in-out infinite;
+      }
+
+      .login-container h2 {
+        margin-bottom: 1.5rem;
+        color: #689f38;
+        font-size: 1.5rem;
+      }
+
+      /* Buat input lebih seimbang */
+      .form-group {
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+      }
+      label {
+        margin-bottom: 0.5rem;
+        color: #333;
+      }
+      input[type="text"],
+      input[type="password"] {
+        width: 94%;
+        padding: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 0.95rem;
+      }
+
+      button {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #8bc34a;
+        border: none;
+        color: #fff;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 1rem;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background-color: #689f38;
+      }
+
+      .error {
+        color: red;
+        margin-top: 1rem;
+      }
+
+      /* Sembunyikan audio agar tidak autoplay */
+      audio {
+        display: none;
+      }
+
+      /* Tombol untuk mulai musik */
+      #playMusicBtn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #ff4081;
+        border: none;
+        color: #fff;
+        padding: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        z-index: 100;
+      }
+      #playMusicBtn:hover {
+        background-color: #00f521ad;
+      }
+
+      /* Media queries untuk responsif */
+      @media only screen and (max-width: 600px) {
+        .login-container {
+          padding: 1.5rem;
+          width: 85%;
+        }
+
+        .login-container h2 {
+          font-size: 1.3rem;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+          width: 90%;
+          font-size: 0.9rem;
+        }
+
+        #playMusicBtn {
+          padding: 0.7rem;
+          font-size: 0.9rem;
+          top: 10px;
+          right: 10px;
+        }
+      }
+
+      @media only screen and (max-width: 400px) {
+        .login-container {
+          padding: 1rem;
+        }
+
+        .login-container h2 {
+          font-size: 1.2rem;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Musik Taylor Swift -->
+    <audio id="bg-music" src="llm.mp3" loop></audio>
+
+    <!-- Tombol untuk memulai musik -->
+    <button id="playMusicBtn" onclick="enableMusic()">Play Music</button>
+    <audio id="bg-music" loop>
+      <source src="llm.mp3" type="audio/mpeg" />
+    </audio>
+    <div class="login-container">
+      <h2>Masukin Nama dan Tanggal Lahir Zaraa💕</h2>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" type="text" disabled />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" disabled />
+      </div>
+      <button onclick="validateLogin()" id="loginBtn" disabled>Masuk</button>
+      <div class="error" id="errorMsg"></div>
+    </div>
+
+    <script>
+      function enableMusic() {
+        const audio = document.getElementById("bg-music");
+        audio
+          .play()
+          .then(() => {
+            // Berhasil memutar musik, aktifkan input & tombol login
+            document.getElementById("username").disabled = false;
+            document.getElementById("password").disabled = false;
+            document.getElementById("loginBtn").disabled = false;
+            // Sembunyikan tombol play
+            document.getElementById("playMusicBtn").style.display = "none";
+          })
+          .catch((err) => {
+            console.log("Autoplay diblokir atau error:", err);
+            // Jika error, aktifkan input meskipun musik tidak bisa dimainkan
+            document.getElementById("username").disabled = false;
+            document.getElementById("password").disabled = false;
+            document.getElementById("loginBtn").disabled = false;
+            document.getElementById("playMusicBtn").style.display = "none";
+          });
+      }
+
+      function validateLogin() {
+        const usr = document.getElementById("username").value.trim();
+        const pwd = document.getElementById("password").value.trim();
+
+        if (usr === "Fadilah Zahra Dwi Kinanti" && pwd === "140305") {
+          window.location.href = "home.html";
+        } else {
+          document.getElementById("errorMsg").innerText =
+            "Username atau password salah.";
+        }
+      }
+    </script>
+  </body>
+</html>
